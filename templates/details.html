@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Submission Details</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .highlight {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            padding: 1rem;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Submission Details</h1>
+        <div class="card">
+            <div class="card-header">
+                Raw Content
+            </div>
+            {% if not is_json %}
+                <div style="color: red; padding-left: 25px; padding-top: 10px;">
+                    <strong>Warning:</strong> The file is not a valid JSON file.
+                </div>
+            {% endif %}
+            {% if is_json %}
+                <div style="color: green; padding-left: 25px; padding-top: 10px;">
+                    <strong>Success:</strong> The file is a valid JSON file.
+                </div>
+            {% endif %}
+            <div class="card-body">
+                <pre class="highlight">{{ file_content }}</pre>
+            </div>
+        </div>
+        <a href="{{ url_for('list_submissions') }}" class="btn btn-secondary mt-3">Back to List</a>
+    </div>
+<br>
+</body>
+</html>
