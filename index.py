@@ -109,10 +109,13 @@ def save_request(request_data, subdirectory='request_logs'):
     if not os.path.exists(month_directory):
         os.makedirs(month_directory)
 
-    # Save the request data to a file
-    file_path = os.path.join(month_directory, "{}.json".format(id))
-    with open(file_path, 'w') as f:
-        f.write(str(request_data))
+        # Save the request data to a file
+        file_path = os.path.join(month_directory, f"{id}.json")
+        try:
+            with open(file_path, 'w') as f:
+                json.dump(request_data, f, indent=4)
+        except Exception as e:
+            return f"Error: {e}"
 
     return 0
 
