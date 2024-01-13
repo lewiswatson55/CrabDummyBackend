@@ -1,5 +1,6 @@
 import json
 import zipfile
+import ast
 
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 import os
@@ -35,12 +36,21 @@ def submission_details(file_path):
         with open(file_path, 'r') as f:
             raw_content = f.read()
 
+        # Check if raw_content starts with a byte string representation
+        if raw_content.startswith("b'") or raw_content.startswith('b"'):
+            # Convert string representation of byte string to actual byte string
+            raw_content = ast.literal_eval(raw_content)
+
+        if isinstance(raw_content, bytes):
+            raw_content = raw_content.decode('utf-8')  # or the appropriate encoding
+
         # Attempt to parse the file content as JSON
         try:
             content = json.loads(raw_content)
             pretty_content = json.dumps(content, indent=4)  # Pretty-print the JSON content
         except json.JSONDecodeError:
             is_json = False  # Set flag to False if parsing fails
+            print("The file is not JSON")
             pretty_content = raw_content  # Display the raw content
 
     except Exception as e:
